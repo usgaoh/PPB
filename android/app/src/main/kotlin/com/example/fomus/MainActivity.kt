@@ -1,0 +1,5 @@
+package com.example.fomus
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
