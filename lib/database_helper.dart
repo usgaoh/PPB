@@ -1,54 +1,83 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:fomus/pertanyaan.dart';
 
-class DBHelper {
-  static final DBHelper _instance = DBHelper._internal();
-  factory DBHelper() => _instance;
-  DBHelper._internal();
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  static Database? _database;
 
-  static late Database _database;
+  final String tablePertanyaan = 'tablePertanyaan';
+  final String columnId = 'id';
+  final String columntitleController = 'titleController';
+  final String columnnameController = 'nameController';
+  final String columnemailController = 'emailController';
+  final String columnphoneController = 'phoneController';
+  final String columnquestion1Controller = 'question1Controller';
+  final String columnquestion2Controller = 'question2Controller';
+  final String columnquestion3Controller = 'question3Controller';
 
-  Future<Database> get database async {
-    if (_database != null) return _database;
+  DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
+
+  Future<Database> get _db async {
+    if (_database != null) {
+      return _database!;
+    }
     _database = await _initDb();
-    return _database;
+    return _database!;
   }
 
   Future<Database> _initDb() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'questions.db');
+    String path = join(databasePath, 'pertanyaan.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  void _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE questions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        content TEXT
+  Future<void> _onCreate(Database db, int version) async {
+    var sql = '''
+      CREATE TABLE $tablePertanyaan (
+        $columnId INTEGER PRIMARY KEY, 
+        $columntitleController TEXT, 
+        $columnnameController TEXT, 
+        $columnemailController TEXT, 
+        $columnphoneController TEXT, 
+        $columnquestion1Controller TEXT, 
+        $columnquestion2Controller TEXT, 
+        $columnquestion3Controller TEXT
       )
-    ''');
+    ''';
+    await db.execute(sql);
   }
 
-  Future<int> insertQuestion(Map<String, dynamic> row) async {
-    Database db = await database;
-    return await db.insert('questions', row);
+  Future<int?> savePertanyaan(Pertanyaan pertanyaan) async {
+    var dbClient = await _db;
+    return await dbClient.insert(tablePertanyaan, pertanyaan.toMap());
   }
 
-  Future<List<Map<String, dynamic>>> queryAllQuestions() async {
-    Database db = await database;
-    return await db.query('questions');
+  Future<List?> getAllPertanyaan() async {
+    var dbClient = await _db;
+    var result = await dbClient.query(tablePertanyaan, columns: [
+      columnId,
+      columntitleController,
+      columnnameController,
+      columnemailController,
+      columnphoneController,
+      columnquestion1Controller,
+      columnquestion2Controller,
+      columnquestion3Controller
+    ]);
+
+    return result.toList();
   }
 
-  Future<int> updateQuestion(Map<String, dynamic> row) async {
-    Database db = await database;
-    int id = row['id'];
-    return await db.update('questions', row, where: 'id = ?', whereArgs: [id]);
+  Future<int?> updatePertanyaan(Pertanyaan pertanyaan) async {
+    var dbClient = await _db;
+    return await dbClient.update(tablePertanyaan, pertanyaan.toMap(), where: '$columnId = ?', whereArgs: [pertanyaan.id]);
   }
 
-  Future<int> deleteQuestion(int id) async {
-    Database db = await database;
-    return await db.delete('questions', where: 'id = ?', whereArgs: [id]);
+  Future<int?> deletePertanyaan(int id) async {
+    var dbClient = await _db;
+    return await dbClient.delete(tablePertanyaan, where: '$columnId = ?', whereArgs: [id]);
   }
 }
