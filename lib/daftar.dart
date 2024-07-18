@@ -14,6 +14,24 @@ class DaftarPage extends StatefulWidget {
 class _DaftarPageState extends State<DaftarPage> {
   List<Pertanyaan> listPertanyaan = [];
   DatabaseHelper db = DatabaseHelper();
+  int _selectedNavbar = 0;
+
+  void _changeSelectedNavBar(int index) {
+    setState(() {
+      _selectedNavbar = index;
+    });
+
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+        break;
+    }
+  }
 
   @override
   void initState() {
@@ -25,7 +43,21 @@ class _DaftarPageState extends State<DaftarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Pertanyaan'),
+        title:const Text("Fomus", style: TextStyle(color: Colors.black)),
+        actions: [
+          Container(
+            width: 40,
+            height: 40,
+            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            decoration:const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/fomus.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ],
+        backgroundColor:const Color.fromARGB(255, 100, 100, 100),
       ),
       body: ListView.builder(
           itemCount: listPertanyaan.length,
@@ -37,20 +69,20 @@ class _DaftarPageState extends State<DaftarPage> {
                 // Edit
                 _openFormEdit(pertanyaan);
               },
-              contentPadding: EdgeInsets.all(16),
+              contentPadding:const EdgeInsets.all(16),
               title: Text(
                 '${pertanyaan.titleController}',
-                style: TextStyle(
+                style:const TextStyle(
                     fontSize: 18,
                     fontStyle: FontStyle.italic,
-                    color: Colors.deepOrangeAccent),
+                    color: Colors.black),
               ),
               subtitle: Text('${pertanyaan.nameController}'),
               trailing: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () {
                   AlertDialog hapus = AlertDialog(
-                    title: Text('Information'),
+                    title: const Text('Information'),
                     content: Container(
                       height: 100,
                       child: Column(
@@ -62,7 +94,7 @@ class _DaftarPageState extends State<DaftarPage> {
                     ),
                     actions: [
                       TextButton(
-                        child: Text('Ya'),
+                        child: const Text('Ya'),
                         onPressed: () {
                           // Delete
                           _deletePertanyaan(pertanyaan, index);
@@ -70,7 +102,7 @@ class _DaftarPageState extends State<DaftarPage> {
                         },
                       ),
                       TextButton(
-                        child: Text('Tidak'),
+                        child: const Text('Tidak'),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -88,18 +120,35 @@ class _DaftarPageState extends State<DaftarPage> {
                       MaterialPageRoute(
                           builder: (context) => DetailPage(pertanyaan)));
                 },
-                icon: Icon(Icons.visibility),
+                icon: const Icon(Icons.visibility),
               ),
             );
           }),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.red,
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.grey,
         onPressed: () {
           // Add
           _openFormCreate();
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.book),
+      label: ('Daftar'),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: ('Beranda'),
+    ),
+  ],
+  currentIndex: _selectedNavbar,
+  selectedItemColor: Colors.black,
+  unselectedItemColor: Colors.grey,
+  onTap: _changeSelectedNavBar,
+),
+
     );
   }
 

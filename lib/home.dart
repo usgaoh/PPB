@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DaftarPage()),
+          MaterialPageRoute(builder: (context) => const DaftarPage()),
         );
         break;
     }
@@ -67,15 +67,15 @@ class _HomeState extends State<Home> {
     final ButtonStyle style = ElevatedButton.styleFrom(backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)));
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 100, 100, 100),
+      backgroundColor: const Color.fromARGB(255, 100, 100, 100),
       appBar: AppBar(
-        title: Text("Fomus", style: TextStyle(color: Colors.black)),
+        title: const Text("Fomus", style: TextStyle(color: Colors.black)),
         actions: [
           Container(
             width: 40,
             height: 40,
             margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/fomus.jpg"),
                 fit: BoxFit.cover,
@@ -89,12 +89,12 @@ class _HomeState extends State<Home> {
         key: _formKey,
         child: Container(
           width: 500,
-          height: 680,
+          height: 612,
           margin: const EdgeInsets.fromLTRB(50, 100, 50, 100),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
             boxShadow: [
-              BoxShadow(
+              const BoxShadow(
                 spreadRadius: 3,
                 blurRadius: 15,
               ),
@@ -106,11 +106,13 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Formulir tanpa judul",
                   labelText: "Judul formulir",
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
@@ -121,6 +123,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -131,6 +135,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: phoneController,
                 decoration: InputDecoration(
@@ -141,6 +147,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: question1Controller,
                 decoration: InputDecoration(
@@ -151,6 +159,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: question2Controller,
                 decoration: InputDecoration(
@@ -161,6 +171,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 16),
               TextField(
                 controller: question3Controller,
                 decoration: InputDecoration(
@@ -173,11 +185,11 @@ class _HomeState extends State<Home> {
               ),
               ElevatedButton(
                 child: (widget.pertanyaan == null)
-                    ? Text(
+                    ? const Text(
                         'Tambah',
                         style: TextStyle(color: Colors.white),
                       )
-                    : Text(
+                    : const Text(
                         'Update',
                         style: TextStyle(color: Colors.white),
                       ),
